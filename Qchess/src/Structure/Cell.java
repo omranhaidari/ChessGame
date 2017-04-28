@@ -1,17 +1,17 @@
 package Structure;
 
 public class Cell {
-    private String couleur;
+    private String color;
     
-    public Cell(String c){
-        this.couleur=c;
+    public Cell(String color){
+        this.color = color;
     }
     
-    public String getCouleur(){
-        return this.couleur;
+    public String getColor(){
+        return this.color;
     }
     
-    public void setCouleur(String coul){
-        this.couleur = coul;
+    public void setColor(String newColor){
+        this.color = newColor;
     }
 }
