@@ -1,4 +1,4 @@
-package Structure;
+package engine.structure;
 
 public class Pawn {
     

@@ -1,5 +1,5 @@
-package Main;
-import Structure.*;
+package chessgame;
+import engine.structure.Grid;
 
 public class Qchess {
 
@@ -9,7 +9,7 @@ public class Qchess {
     public static void main(String[] args) {
         // TODO code application logic here
         Grid grille = new Grid();
-        grille.printGrid();
+        //grille.printGrid();
     }
     
 }
