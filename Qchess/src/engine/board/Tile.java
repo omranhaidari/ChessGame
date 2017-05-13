@@ -3,9 +3,7 @@ package engine.board;
 import engine.pieces.Piece;
 import java.util.HashMap;
 import java.util.Map;
-import jdk.nashorn.internal.ir.annotations.Immutable;
-import com.google.common.collect.ImmutableMap;
-// import java.util.Collections;
+import java.util.Collections;
 
 public abstract class Tile {
 //    private String color;
@@ -22,23 +20,22 @@ public abstract class Tile {
 //        this.color = newColor;
 //    }
     
-    protected final int tileCoordinate;
+    protected int tileCoordinate;
     private static final Map<Integer, EmptyTile> EMPTY_TILES_CACHE = createAllPossibleEmptyTiles();
 
     private static Map<Integer, EmptyTile> createAllPossibleEmptyTiles() {
-        final Map<Integer, EmptyTile> emptyTileMap = new HashMap<>();
+        Map<Integer, EmptyTile> emptyTileMap = new HashMap<>();
         
-        for (int i = 0; i < 64; i++)
+        for (int i = 0; i < BoardUtils.NUM_TILES; i++)
             emptyTileMap.put(i, new EmptyTile(i));
-        // Collections.unmodifiableMap(emptyTileMap);
-        return ImmutableMap.copyOf(emptyTileMap);
+        return Collections.unmodifiableMap(emptyTileMap);
     }
         
     public abstract boolean isTileOccupied();
    
     public abstract Piece getPiece();
     
-    public static Tile createTile(final int tileCoordinate, final Piece piece) {
+    public static Tile createTile(int tileCoordinate, Piece piece) {
         return piece != null ? new OccupiedTile(tileCoordinate, piece) : 
                 EMPTY_TILES_CACHE.get(tileCoordinate);
     }
@@ -48,9 +45,9 @@ public abstract class Tile {
     }
    
    // Sous-classe de Tile
-   public static final class EmptyTile extends Tile{
+   public static class EmptyTile extends Tile{
 
-        private EmptyTile(final int coordinate) {
+        private EmptyTile(int coordinate) {
             super(coordinate);
         }
         
@@ -66,7 +63,7 @@ public abstract class Tile {
    }
    
    // Sous-classe de Tile
-   public static final class OccupiedTile extends Tile {
+   public static class OccupiedTile extends Tile {
         private final Piece pieceOnTile;
        
         private OccupiedTile(int tileCoordinate, Piece pieceOnTile) {
@@ -84,5 +81,4 @@ public abstract class Tile {
             return this.pieceOnTile;
         }
    }
-    
 }

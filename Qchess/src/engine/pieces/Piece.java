@@ -3,7 +3,7 @@ package engine.pieces;
 import engine.Alliance;
 import engine.board.Board;
 import engine.board.Move;
-import java.util.List;
+import java.util.Collection;
 
 public abstract class Piece {
 //    private int player;
@@ -13,15 +13,26 @@ public abstract class Piece {
 //        this.player = 0;
 //    }
     
-    protected final int piecePosition;
-    protected final Alliance pieceAlliance; // La piece est soit noire, soit blanche
+    protected int piecePosition;
+    protected Alliance pieceAlliance; // La piece est soit noire, soit blanche
+    protected boolean isFirstMove;
 
-    public Piece(final int piecePosition, final Alliance pieceAlliance) {
+    public Piece(int piecePosition, Alliance pieceAlliance) {
         this.piecePosition = piecePosition;
         this.pieceAlliance = pieceAlliance;
+        this.isFirstMove = false;
     }
     
-    public abstract List<Move> calculateLegalMoves(final Board board);
+    public Alliance getPieceAlliance() {
+        return this.pieceAlliance;
+    }
+    
+    public boolean isFirstMove() {
+        return this.isFirstMove;
+    }
+    
+    // calcule tous les mouvements possibles et retourne une collection de mouvements autorisés
+    public abstract Collection<Move> calculateLegalMoves(Board board);
     
     
 } 
