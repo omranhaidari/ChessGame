@@ -6,20 +6,6 @@ import java.util.Map;
 import java.util.Collections;
 
 public abstract class Tile {
-//    private String color;
-//    
-//    public Tile(String color){
-//        this.color = color;
-//    }
-//    
-//    public String getColor(){
-//        return this.color;
-//    }
-//    
-//    public void setColor(String newColor){
-//        this.color = newColor;
-//    }
-    
     protected int tileCoordinate;
     private static final Map<Integer, EmptyTile> EMPTY_TILES_CACHE = createAllPossibleEmptyTiles();
 
@@ -35,6 +21,7 @@ public abstract class Tile {
    
     public abstract Piece getPiece();
     
+    // si la case est occupée, elle retourne case occupée, sinon elle créé une case vide
     public static Tile createTile(int tileCoordinate, Piece piece) {
         return piece != null ? new OccupiedTile(tileCoordinate, piece) : 
                 EMPTY_TILES_CACHE.get(tileCoordinate);
@@ -49,6 +36,12 @@ public abstract class Tile {
 
         private EmptyTile(int coordinate) {
             super(coordinate);
+        }
+        
+        // si la case n'est pas occupée, on affiche : -
+        @Override
+        public String toString() {
+            return "-";
         }
         
         @Override
@@ -71,6 +64,13 @@ public abstract class Tile {
             this.pieceOnTile = pieceOnTile;
         }
 
+        // si la case est occupée, on affiche la pièce les noires en lettre minuscule et les blanches en lettre majuscule
+        @Override
+        public String toString() {
+            return getPiece().getPieceAlliance().isBlack() ? 
+                    getPiece().toString().toLowerCase() : getPiece().toString();
+        }
+        
         @Override
         public boolean isTileOccupied() {
             return true;

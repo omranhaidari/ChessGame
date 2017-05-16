@@ -6,21 +6,18 @@ import engine.board.Move;
 import java.util.Collection;
 
 public abstract class Piece {
-//    private int player;
-//    abstract void movement();
-//    
-//    public Piece(){
-//        this.player = 0;
-//    }
-    
     protected int piecePosition;
     protected Alliance pieceAlliance; // La piece est soit noire, soit blanche
     protected boolean isFirstMove;
 
-    public Piece(int piecePosition, Alliance pieceAlliance) {
+    public Piece(Alliance pieceAlliance, int piecePosition) {
         this.piecePosition = piecePosition;
         this.pieceAlliance = pieceAlliance;
         this.isFirstMove = false;
+    }
+    
+    public int getPiecePosition() {
+        return this.piecePosition;
     }
     
     public Alliance getPieceAlliance() {
@@ -34,5 +31,22 @@ public abstract class Piece {
     // calcule tous les mouvements possibles et retourne une collection de mouvements autorisés
     public abstract Collection<Move> calculateLegalMoves(Board board);
     
-    
+    public enum PieceType {
+        PAWN("P"),
+        KNIGHT("N"),
+        BISHOP("B"),
+        ROOK("R"),
+        KING("K");
+        
+        private String pieceName;
+        
+        PieceType(String pieceName){
+            this.pieceName = pieceName;
+        }
+        
+        @Override
+        public String toString() {
+            return this.pieceName;
+        }
+    }
 } 

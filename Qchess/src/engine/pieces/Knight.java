@@ -15,10 +15,9 @@ public class Knight extends Piece {
     private final static int[] CANDIDATE_MOVE_COORDINATES = {-17, -15, -10 -6, 
         6, 10, 15, 17}; // déplacements possibles par rapport à la position de la pièce
 
-    public Knight(int piecePosition, Alliance pieceAlliance) {
-        super(piecePosition, pieceAlliance);
+    public Knight(Alliance pieceAlliance, int piecePosition) {
+        super(pieceAlliance, piecePosition);
     }
-
             
     /* Pour chaque case destinataire possible, on calcule pour chaque mouvement possible. 
        si c'est une case (coordonée / numéro de case) valide
@@ -80,4 +79,8 @@ public class Knight extends Piece {
                 candidateOffset == -6 || candidateOffset == 10 || candidateOffset == 17);
     }
     
+    @Override
+    public String toString() {
+        return PieceType.KNIGHT.toString();
+    }
 }

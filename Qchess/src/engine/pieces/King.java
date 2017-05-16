@@ -14,34 +14,32 @@ import java.util.List;
 public class King extends Piece {
     private final static int[] CANDIDATE_MOVE_COORDINATES = {-9, -8, -7, -1, 1, 7, 8, 9}; 
 
-    public King(int piecePosition, Alliance pieceAlliance) {
-        super(piecePosition, pieceAlliance);
+    public King(Alliance pieceAlliance, int piecePosition) {
+        super(pieceAlliance, piecePosition);
     }
-
+    
     @Override
     public Collection<Move> calculateLegalMoves(Board board) {
         List<Move> legalMoves = new ArrayList<>();
 
         for (final int currentCandidateOffset : CANDIDATE_MOVE_COORDINATES) {
             int candidateDestinationCoordinate = this.piecePosition + currentCandidateOffset;
-            if (isFirstColumnExlusion(this.piecePosition, currentCandidateOffset) ||
-                    isEighthColumnExlusion(this.piecePosition, currentCandidateOffset)) {
-                continue;
-            }
-            if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
-                Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
-                if (!candidateDestinationTile.isTileOccupied())
-                    legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
-                else {
-                    Piece pieceAtDestination = candidateDestinationTile.getPiece();
-                    Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
-                    // si ce n'est pas une pièce de la même alliance/couleur alors c'est une pièce ennemie
-                    if (this.pieceAlliance != pieceAlliance)
-                        legalMoves.add(new AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
-                    // indique que ce n'est pas occupé et que l'on peut encore se déplacer, sinon on arrete la boucle si il y a déjà une pièce
-                    break; 
+                if (isFirstColumnExlusion(this.piecePosition, currentCandidateOffset) ||
+                        isEighthColumnExlusion(this.piecePosition, currentCandidateOffset)) {
+                    continue;
                 }
-            }
+                if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
+                    Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
+                    if (!candidateDestinationTile.isTileOccupied())
+                        legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                    else {
+                        Piece pieceAtDestination = candidateDestinationTile.getPiece();
+                        Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
+                        // si ce n'est pas une pièce de la même alliance/couleur alors c'est une pièce ennemie
+                        if (this.pieceAlliance != pieceAlliance)
+                            legalMoves.add(new AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
+                    }
+                }
         }
         return Collections.unmodifiableList(legalMoves);
     }
@@ -55,5 +53,10 @@ public class King extends Piece {
     private static boolean isEighthColumnExlusion(int currentPosition, int candidateOffset) {
         return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -7 ||
                 candidateOffset == 1 || candidateOffset == 9);
+    }
+    
+    @Override
+    public String toString() {
+        return PieceType.KING.toString();
     }
 }

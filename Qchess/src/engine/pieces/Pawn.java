@@ -14,8 +14,8 @@ import java.util.List;
 public class Pawn extends Piece {
     private final static int[] CANDIDATE_MOVE_COORDINATES = {7, 8, 9, 16}; 
 
-    public Pawn(int piecePosition, Alliance pieceAlliance) {
-        super(piecePosition, pieceAlliance);
+    public Pawn(Alliance pieceAlliance, int piecePosition) {
+        super(pieceAlliance, piecePosition);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class Pawn extends Piece {
                 int behindCandidateDestinationCoordinate = this.piecePosition + (this.pieceAlliance.getDirection() * 8);
                 if (!board.getTile(behindCandidateDestinationCoordinate).isTileOccupied() 
                         && !board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
-                    legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
+                            legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
                 }
             }
             // attaque en diagonale à droite
@@ -74,6 +74,10 @@ public class Pawn extends Piece {
             }
         }
         return Collections.unmodifiableList(legalMoves);
-
-    }  
+    }
+    
+    @Override
+    public String toString() {
+        return PieceType.PAWN.toString();
+    }
 }
