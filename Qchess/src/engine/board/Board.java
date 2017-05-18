@@ -3,6 +3,7 @@ package engine.board;
 import engine.Alliance;
 import engine.pieces.Piece;
 import engine.pieces.*;
+import engine.player.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,15 +16,20 @@ public class Board {
     private List<Tile> gameBoard;
     private Collection<Piece> whitePieces;
     private Collection<Piece> blackPieces;
+    private WhitePlayer whitePlayer;
+    private BlackPlayer blackPlayer;
+    private Player currentPlayer;
     
 
     private Board(Builder builder) {
         this.gameBoard = createGameBoard(builder);
         this.whitePieces = calculateActivePieces(this.gameBoard, Alliance.WHITE);
         this.blackPieces = calculateActivePieces(this.gameBoard, Alliance.BLACK);
-        
-        Collection<Move> whiteStandardLegaleMoves = calculateLegalMoves(this.whitePieces);
-        Collection<Move> blackStandardLegaleMoves = calculateLegalMoves(this.blackPieces);
+        Collection<Move> whiteStandardLegalMoves = calculateLegalMoves(this.whitePieces);
+        Collection<Move> blackStandardLegalMoves = calculateLegalMoves(this.blackPieces);
+        this.whitePlayer = new WhitePlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
+        this.blackPlayer = new BlackPlayer(this, whiteStandardLegalMoves, blackStandardLegalMoves);
+        this.currentPlayer = null;
     }
     
     // retourne toutes les pièces par couleur dans le jeu
@@ -96,16 +102,36 @@ public class Board {
         // construit le tableau
         return builder.build();
     }
+    
+    public Player whitePlayer() {
+        return this.whitePlayer;
+    }
+    
+    public Player blackPlayer() {
+        return this.blackPlayer;
+    }
+    
+    public Player currentPlayer() {
+        return this.currentPlayer;
+    }
         
     public Tile getTile(int tileCoordinate) {
         return gameBoard.get(tileCoordinate);
     }
     
+    public Collection<Piece> getBlackPieces() {
+        return this.blackPieces;
+    }
+    
+    public Collection<Piece> getWhitePieces() {
+        return this.whitePieces;
+    }
+     
     // print les pièces noires et les pièces blanches différemment
     private static String prettyPrint(Tile tile) {
         return tile.toString();
     }
-    
+     
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

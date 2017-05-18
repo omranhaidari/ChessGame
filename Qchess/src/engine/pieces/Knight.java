@@ -16,7 +16,7 @@ public class Knight extends Piece {
         6, 10, 15, 17}; // déplacements possibles par rapport à la position de la pièce
 
     public Knight(Alliance pieceAlliance, int piecePosition) {
-        super(pieceAlliance, piecePosition);
+        super(PieceType.KNIGHT, pieceAlliance, piecePosition);
     }
             
     /* Pour chaque case destinataire possible, on calcule pour chaque mouvement possible. 

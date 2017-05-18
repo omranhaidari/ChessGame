@@ -6,14 +6,20 @@ import engine.board.Move;
 import java.util.Collection;
 
 public abstract class Piece {
+    protected PieceType pieceType;
     protected int piecePosition;
     protected Alliance pieceAlliance; // La piece est soit noire, soit blanche
     protected boolean isFirstMove;
 
-    public Piece(Alliance pieceAlliance, int piecePosition) {
+    public Piece(PieceType pieceType, Alliance pieceAlliance, int piecePosition) {
+        this.pieceType = pieceType;
         this.piecePosition = piecePosition;
         this.pieceAlliance = pieceAlliance;
         this.isFirstMove = false;
+    }
+    
+    public PieceType getPieceType() {
+        return this.pieceType;
     }
     
     public int getPiecePosition() {
@@ -32,17 +38,44 @@ public abstract class Piece {
     public abstract Collection<Move> calculateLegalMoves(Board board);
     
     public enum PieceType {
-        PAWN("P"),
-        KNIGHT("N"),
-        BISHOP("B"),
-        ROOK("R"),
-        KING("K");
+        PAWN("P") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        KNIGHT("N") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        BISHOP("B") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        ROOK("R") {
+            @Override
+            public boolean isKing() {
+                return false;
+            }
+        },
+        KING("K") {
+            @Override
+            public boolean isKing() {
+                return true;
+            }
+        };
         
         private String pieceName;
         
         PieceType(String pieceName){
             this.pieceName = pieceName;
         }
+        
+        public abstract boolean isKing();
         
         @Override
         public String toString() {
