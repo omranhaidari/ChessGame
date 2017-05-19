@@ -1,7 +1,6 @@
 package engine.board;
 
 import engine.Alliance;
-import engine.pieces.Piece;
 import engine.pieces.*;
 import engine.player.*;
 import java.util.ArrayList;
@@ -11,6 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import com.google.common.collect.Iterables;
 
 public class Board {
     private List<Tile> gameBoard;
@@ -101,6 +101,11 @@ public class Board {
         builder.setMoveMaker(Alliance.WHITE);
         // construit le tableau
         return builder.build();
+    }
+    
+    // concaténation des joueurs blanc et noir
+    public Iterable<Move> getAllLegalMoves() {
+        return Iterables.unmodifiableIterable(Iterables.concat(this.whitePlayer.getLegalMoves(), this.blackPlayer.getLegalMoves()));
     }
     
     public Player whitePlayer() {

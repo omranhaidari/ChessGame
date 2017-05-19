@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Iterables;
 
 public abstract class Player {
     protected Board board;
@@ -19,7 +21,8 @@ public abstract class Player {
     public Player(Board board, Collection<Move> legalMoves, Collection<Move> opponentMoves) {
         this.board = board;
         this.playerKing = establishKing();
-        this.legalMoves = legalMoves;
+        // concaténation pour savoir quelles sont les attaques ennemies afin de trouver les mouvement possibles
+        this.legalMoves = ImmutableList.copyOf(Iterables.concat(legalMoves, calculateKingCastles(legalMoves, opponentMoves)));
         // les autres pièces attaquent le roi et que la liste de mouvement qui attaquent le roi n'est pas vide
         this.isInCheck = !Player.calculateAttacksOnTile(this.playerKing.getPiecePosition(), opponentMoves).isEmpty();
     }
@@ -36,7 +39,7 @@ public abstract class Player {
     
     // si les mouvements possibles des pièces ennemies correspondent arrivent sur le roi alors elles attaquent le roi
     // retourne une collection de mouvements qui attanquent le roi
-    private static Collection<Move> calculateAttacksOnTile(int piecePosition, Collection<Move> moves) {
+    protected static Collection<Move> calculateAttacksOnTile(int piecePosition, Collection<Move> moves) {
         List<Move> attackMoves = new ArrayList<>();
         for (Move move : moves) {
             if(piecePosition == move.getDestinationCoordinate())
@@ -98,8 +101,7 @@ public abstract class Player {
     }
     
     public abstract Collection<Piece> getActivePieces();
-    
     public abstract Alliance getAlliance();
-    
     public abstract Player getOpponent();
+    protected abstract Collection<Move> calculateKingCastles(Collection<Move> playerLegals, Collection<Move> opponentsLegals);
 }

@@ -30,6 +30,10 @@ public abstract class Tile {
     private Tile(int tileCoordinate) {
         this.tileCoordinate = tileCoordinate;
     }
+    
+    public int getTileCoordinate() {
+        return this.tileCoordinate;
+    }
    
    // Sous-classe de Tile
    public static class EmptyTile extends Tile{
