@@ -57,12 +57,12 @@ public class Bishop extends Piece {
     
     // Si la pièce est au bord du board, il y a des déplacements que ne sont pas autorisés
     private static boolean isFirstColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.FIRST_COLUMN[currentPosition] && candidateOffset == -9 ||
+        return BoardUtils.firstFile[currentPosition] && candidateOffset == -9 ||
                 candidateOffset == 7;
     }
     
     private static boolean isEighthColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -7 ||
+        return BoardUtils.eighthFile[currentPosition] && (candidateOffset == -7 ||
                 candidateOffset == 9);
     }
     

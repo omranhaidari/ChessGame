@@ -11,8 +11,7 @@ public abstract class Tile {
 
     private static Map<Integer, EmptyTile> createAllPossibleEmptyTiles() {
         Map<Integer, EmptyTile> emptyTileMap = new HashMap<>();
-        
-        for (int i = 0; i < BoardUtils.NUM_TILES; i++)
+        for (int i = 0; i < BoardUtils.numTiles; i++)
             emptyTileMap.put(i, new EmptyTile(i));
         return Collections.unmodifiableMap(emptyTileMap);
     }
@@ -23,8 +22,7 @@ public abstract class Tile {
     
     // si la case est occupée, elle retourne case occupée, sinon elle créé une case vide
     public static Tile createTile(int tileCoordinate, Piece piece) {
-        return piece != null ? new OccupiedTile(tileCoordinate, piece) : 
-                EMPTY_TILES_CACHE.get(tileCoordinate);
+        return piece != null ? new OccupiedTile(tileCoordinate, piece) : EMPTY_TILES_CACHE.get(tileCoordinate);
     }
     
     private Tile(int tileCoordinate) {

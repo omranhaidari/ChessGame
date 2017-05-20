@@ -1,8 +1,11 @@
 package engine.board;
 
+import com.google.common.collect.ImmutableList;
 import engine.Alliance;
 import engine.pieces.*;
-import engine.player.*;
+import engine.player.Player;
+import engine.player.WhitePlayer;
+import engine.player.BlackPlayer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -59,8 +62,8 @@ public class Board {
        va retourner la pièce associée à une certaine tile. Cela créé une tile.
     */
     private static List<Tile> createGameBoard(Builder builder) {
-        Tile [] tiles = new Tile[BoardUtils.NUM_TILES];
-        for (int i = 0 ; i < BoardUtils.NUM_TILES ; i++) {
+        Tile[] tiles = new Tile[BoardUtils.numTiles];
+        for (int i = 0 ; i < BoardUtils.numTiles ; i++) {
             tiles[i] = Tile.createTile(i, builder.boardConfig.get(i));
         }
         List<Tile> tilesList = Arrays.asList(tiles);
@@ -140,10 +143,10 @@ public class Board {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        for (int i = 0 ; i < BoardUtils.NUM_TILES ; i ++) {
+        for (int i = 0 ; i < BoardUtils.numTiles ; i ++) {
             String tileText = this.gameBoard.get(i).toString();
             builder.append(String.format("%3s", tileText));
-            if ((i + 1) % BoardUtils.NUM_TILES_PER_ROW == 0)
+            if ((i + 1) % BoardUtils.numTilesPerRow == 0)
                 builder.append("\n");
         }
         return builder.toString();
@@ -151,8 +154,8 @@ public class Board {
     
     // créer une instance de la classe Board
     public static class Builder {
-        private Map<Integer, Piece> boardConfig; // numéro d'une case avec une pièce
-        private Alliance nextMoveMaker; // la personne qui est en train de jouer
+         Map<Integer, Piece> boardConfig; // numéro d'une case avec une pièce
+         Alliance nextMoveMaker; // la personne qui est en train de jouer
         
         public Builder() {
             this.boardConfig = new HashMap<>();
@@ -163,7 +166,7 @@ public class Board {
             return this;
         }
         
-        public Builder setMoveMaker(Alliance alliance) {
+        public Builder setMoveMaker(Alliance nextMoveMaker) {
             this.nextMoveMaker = nextMoveMaker;
             return this;
         }

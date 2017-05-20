@@ -38,10 +38,10 @@ public class Pawn extends Piece {
             }
             // saut de 2 cases pour le premier déplacement
             else if (currentCandidateOffset == 16 && this.isFirstMove() && 
-                    (BoardUtils.SECOND_ROW[this.piecePosition] && this.getPieceAlliance().isBlack()) ||
-                    (BoardUtils.THIRD_ROW[this.piecePosition] && this.getPieceAlliance().isBlack()) ||
-                    (BoardUtils.SIXTH_ROW[this.piecePosition] && this.getPieceAlliance().isWhite()) ||
-                    (BoardUtils.SEVENTH_ROW[this.piecePosition] && this.getPieceAlliance().isWhite())) {
+                    (BoardUtils.seventhRank[this.piecePosition] && this.getPieceAlliance().isBlack()) ||
+                    (BoardUtils.sixthRank[this.piecePosition] && this.getPieceAlliance().isBlack()) ||
+                    (BoardUtils.thirdRank[this.piecePosition] && this.getPieceAlliance().isWhite()) ||
+                    (BoardUtils.secondRank[this.piecePosition] && this.getPieceAlliance().isWhite())) {
                 int behindCandidateDestinationCoordinate = this.piecePosition + (this.pieceAlliance.getDirection() * 8);
                 if (!board.getTile(behindCandidateDestinationCoordinate).isTileOccupied() 
                         && !board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
@@ -50,8 +50,8 @@ public class Pawn extends Piece {
             }
             // attaque en diagonale à droite
             else if (currentCandidateOffset == 7 && 
-                    !(BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceAlliance.isWhite() ||
-                    BoardUtils.FIRST_COLUMN[this.piecePosition] && this.pieceAlliance.isBlack())) {
+                    !(BoardUtils.eighthFile[this.piecePosition] && this.pieceAlliance.isWhite() ||
+                    BoardUtils.firstFile[this.piecePosition] && this.pieceAlliance.isBlack())) {
                 if (board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
                     Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
                     if (this.pieceAlliance != pieceOnCandidate.getPieceAlliance()) {
@@ -62,8 +62,8 @@ public class Pawn extends Piece {
             }
             // attaque en diagonale à gauche
             else if (currentCandidateOffset == 9 && 
-                    !(BoardUtils.FIRST_COLUMN[this.piecePosition] && this.pieceAlliance.isWhite() ||
-                    BoardUtils.EIGHTH_COLUMN[this.piecePosition] && this.pieceAlliance.isBlack())) {
+                    !(BoardUtils.firstFile[this.piecePosition] && this.pieceAlliance.isWhite() ||
+                    BoardUtils.eighthFile[this.piecePosition] && this.pieceAlliance.isBlack())) {
                 if (board.getTile(candidateDestinationCoordinate).isTileOccupied()) {
                     Piece pieceOnCandidate = board.getTile(candidateDestinationCoordinate).getPiece();
                     if (this.pieceAlliance != pieceOnCandidate.getPieceAlliance()) {

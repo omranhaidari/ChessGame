@@ -60,22 +60,22 @@ public class Knight extends Piece {
            peut pourra pas faire ce qu'il y a dans le if(BoardUtils...)
         */
     private static boolean isFirstColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.FIRST_COLUMN[currentPosition] && (candidateOffset == -17 ||
+        return BoardUtils.firstFile[currentPosition] && (candidateOffset == -17 ||
                 candidateOffset == -10 ||candidateOffset == 6 || candidateOffset == 15);
     }
     
     private static boolean isSecondColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.SECOND_COLUMN[currentPosition] && (candidateOffset == -10 || 
+        return BoardUtils.secondFile[currentPosition] && (candidateOffset == -10 || 
                 candidateOffset == 6);
     }
     
     private static boolean isSeventhColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.SEVENTH_COLUMN[currentPosition] && (candidateOffset == -6 ||
+        return BoardUtils.seventhFile[currentPosition] && (candidateOffset == -6 ||
                 candidateOffset == 10);
     }
 
     private static boolean isEighthColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == -15 ||
+        return BoardUtils.eighthFile[currentPosition] && (candidateOffset == -15 ||
                 candidateOffset == -6 || candidateOffset == 10 || candidateOffset == 17);
     }
     

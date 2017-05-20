@@ -57,11 +57,11 @@ public class Rook extends Piece {
     
     // Si la pièce est au bord du board, il y a des déplacements que ne sont pas autorisés
     private static boolean isFirstColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.FIRST_COLUMN[currentPosition] && (candidateOffset == -1);
+        return BoardUtils.firstFile[currentPosition] && (candidateOffset == -1);
     }
     
     private static boolean isEighthColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.EIGHTH_COLUMN[currentPosition] && (candidateOffset == 1);
+        return BoardUtils.eighthFile[currentPosition] && (candidateOffset == 1);
     }
     
     @Override
