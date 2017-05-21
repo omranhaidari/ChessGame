@@ -15,9 +15,22 @@ public class Rook extends Piece {
     private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-8, 1, 1, 8};
 
     public Rook(Alliance pieceAlliance, int piecePosition) {
-        super(PieceType.ROOK, pieceAlliance, piecePosition);
+        super(PieceType.ROOK, pieceAlliance, piecePosition, true);
     }
-
+    
+    public Rook(Alliance pieceAlliance, int piecePosition, boolean isFirstMove) {
+        super(PieceType.ROOK, pieceAlliance, piecePosition, isFirstMove);
+    }
+    
+    // Si la pièce est au bord du board, il y a des déplacements que ne sont pas autorisés
+    private static boolean isFirstColumnExlusion(int currentPosition, int candidateOffset) {
+        return BoardUtils.firstFile[currentPosition] && (candidateOffset == -1);
+    }
+    
+    private static boolean isEighthColumnExlusion(int currentPosition, int candidateOffset) {
+        return BoardUtils.eighthFile[currentPosition] && (candidateOffset == 1);
+    }
+    
     /* On regarde selon chaque vecteur de direction, on vérifie si c'est une 
        tile valide sur le board pour le déplacement. Si c'est le cas, on vérifie
        si la tile est occupée : c'est une MajorMove. Si elle est occupée par un
@@ -53,15 +66,6 @@ public class Rook extends Piece {
             }
         }
         return Collections.unmodifiableList(legalMoves);
-    }
-    
-    // Si la pièce est au bord du board, il y a des déplacements que ne sont pas autorisés
-    private static boolean isFirstColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.firstFile[currentPosition] && (candidateOffset == -1);
-    }
-    
-    private static boolean isEighthColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.eighthFile[currentPosition] && (candidateOffset == 1);
     }
     
     @Override

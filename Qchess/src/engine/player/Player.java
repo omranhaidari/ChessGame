@@ -71,7 +71,7 @@ public abstract class Player {
     }
     
     public boolean isMoveLegal(Move move) {
-        return this.legalMoves.contains(move);
+        return !(move.isCastlingMove() && isInCheck()) && this.legalMoves.contains(move);
     }
     
     public boolean isInCheck() {

@@ -21,7 +21,7 @@ public class Board {
     private Collection<Piece> blackPieces;
     private WhitePlayer whitePlayer;
     private BlackPlayer blackPlayer;
-    private Player currentPlayer;
+    public Player currentPlayer;
     
 
     private Board(Builder builder) {

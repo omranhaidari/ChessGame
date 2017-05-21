@@ -16,9 +16,37 @@ public class Knight extends Piece {
         6, 10, 15, 17}; // déplacements possibles par rapport à la position de la pièce
 
     public Knight(Alliance pieceAlliance, int piecePosition) {
-        super(PieceType.KNIGHT, pieceAlliance, piecePosition);
+        super(PieceType.KNIGHT, pieceAlliance, piecePosition, true);
     }
-            
+    
+    public Knight(Alliance pieceAlliance, int piecePosition, boolean isForstMove) {
+        super(PieceType.KNIGHT, pieceAlliance, piecePosition, isForstMove);
+    }
+    
+    /* Si la pièce est sur la première/deuxième/septième/huitième colonne et
+       si le mouvement correspond à une de ces cases destinataires, on ne 
+       peut pourra pas faire ce qu'il y a dans le if(BoardUtils...)
+    */
+    private static boolean isFirstColumnExlusion(int currentPosition, int candidateOffset) {
+        return BoardUtils.firstFile[currentPosition] && (candidateOffset == -17 ||
+                candidateOffset == -10 ||candidateOffset == 6 || candidateOffset == 15);
+    }
+    
+    private static boolean isSecondColumnExlusion(int currentPosition, int candidateOffset) {
+        return BoardUtils.secondFile[currentPosition] && (candidateOffset == -10 || 
+                candidateOffset == 6);
+    }
+    
+    private static boolean isSeventhColumnExlusion(int currentPosition, int candidateOffset) {
+        return BoardUtils.seventhFile[currentPosition] && (candidateOffset == -6 ||
+                candidateOffset == 10);
+    }
+
+    private static boolean isEighthColumnExlusion(int currentPosition, int candidateOffset) {
+        return BoardUtils.eighthFile[currentPosition] && (candidateOffset == -15 ||
+                candidateOffset == -6 || candidateOffset == 10 || candidateOffset == 17);
+    }
+    
     /* Pour chaque case destinataire possible, on calcule pour chaque mouvement possible. 
        si c'est une case (coordonée / numéro de case) valide
        et si c'est pas une case occupée, on ajoute dans la liste des mouvements légaux
@@ -53,30 +81,6 @@ public class Knight extends Piece {
             }
         }
         return Collections.unmodifiableList(legalMoves);
-    }
-    
-        /* Si la pièce est sur la première/deuxième/septième/huitième colonne et
-           si le mouvement correspond à une de ces cases destinataires, on ne 
-           peut pourra pas faire ce qu'il y a dans le if(BoardUtils...)
-        */
-    private static boolean isFirstColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.firstFile[currentPosition] && (candidateOffset == -17 ||
-                candidateOffset == -10 ||candidateOffset == 6 || candidateOffset == 15);
-    }
-    
-    private static boolean isSecondColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.secondFile[currentPosition] && (candidateOffset == -10 || 
-                candidateOffset == 6);
-    }
-    
-    private static boolean isSeventhColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.seventhFile[currentPosition] && (candidateOffset == -6 ||
-                candidateOffset == 10);
-    }
-
-    private static boolean isEighthColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.eighthFile[currentPosition] && (candidateOffset == -15 ||
-                candidateOffset == -6 || candidateOffset == 10 || candidateOffset == 17);
     }
     
     @Override

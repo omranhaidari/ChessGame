@@ -10,6 +10,7 @@ public abstract class Move {
     protected Board board;
     protected Piece movedPiece;
     protected int destinationCoordinate;
+    protected boolean isFirstMove;
     public static final Move NULL_MOVE = new NullMove();
     
 
@@ -17,13 +18,20 @@ public abstract class Move {
         this.board = board;
         this.movedPiece = movedPiece;
         this.destinationCoordinate = destinationCoordinate;
+        this.isFirstMove = movedPiece.isFirstMove();
+    }
+
+    public Move(Board board, int destinationCoordinate) {
+        this.board = board;
+        this.destinationCoordinate = destinationCoordinate;
+        this.movedPiece = null;
+        this.isFirstMove = false;
     }
     
     // crée un nouveau plateau de jeu avec le déplacement de la pièce en sélectionnée
     public Board execute() {
         Builder builder = new Builder();
         for (Piece piece : this.board.currentPlayer().getActivePieces()) {
-            ///
             if (!this.movedPiece.equals(piece))
                 builder.setPiece(piece);
         }
@@ -35,6 +43,16 @@ public abstract class Move {
         // à l'adversaire de jouer ensuite
         builder.setMoveMaker(this.board.currentPlayer().getOpponent().getAlliance());
         return builder.build();
+    }
+    
+    public String disambiguationFile() {
+        for(final Move move : this.board.currentPlayer().getLegalMoves()) {
+            if(move.getDestinationCoordinate() == this.destinationCoordinate && !this.equals(move) &&
+               this.movedPiece.getPieceType().equals(move.getMovedPiece().getPieceType())) {
+                return BoardUtils.getPositionAtCoordinate(this.movedPiece.getPiecePosition()).substring(0, 1);
+            }
+        }
+        return "";
     }
     
     public boolean isAttack() {
@@ -54,8 +72,8 @@ public abstract class Move {
     }
     
     
-    private int getCurrentCoordinate() {
-        return this.getMovedPiece().getPiecePosition();
+    public int getCurrentCoordinate() {
+        return this.movedPiece.getPiecePosition();
     }
     
     public Piece getMovedPiece() {
@@ -68,6 +86,7 @@ public abstract class Move {
         int result = 1;
         result = prime * result + this.destinationCoordinate;
         result = prime * result + this.movedPiece.hashCode();
+        result = prime * result + this.movedPiece.getPiecePosition();
         return result;
     }
     
@@ -78,7 +97,8 @@ public abstract class Move {
         if(!(other instanceof Move))
             return false;
         Move otherMove = (Move) other;
-        return getDestinationCoordinate() == otherMove.getDestinationCoordinate() &&
+        return getCurrentCoordinate() == otherMove.getCurrentCoordinate() &&
+                getDestinationCoordinate() == otherMove.getDestinationCoordinate() &&
                 getMovedPiece().equals(otherMove.getMovedPiece());
     }
     
@@ -86,6 +106,17 @@ public abstract class Move {
     public static class MajorMove extends Move {
         public MajorMove(Board board, Piece movedPiece, int destinationCoordinate) {
             super(board, movedPiece, destinationCoordinate);
+        }
+        
+        @Override
+        public boolean equals(Object other) {
+            return this == other || other instanceof MajorMove && super.equals(other);
+        }
+        
+        @Override
+        public String toString() {
+            return movedPiece.getPieceType().toString() + disambiguationFile() +
+                   BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
         }
     }
     
@@ -156,6 +187,11 @@ public abstract class Move {
             builder.setPiece(movedPawn);
             builder.setMoveMaker(this.board.currentPlayer().getOpponent().getAlliance());
             return builder.build();
+        }
+        
+        @Override
+        public String toString() {
+            return BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
         }
     }
     
@@ -242,7 +278,7 @@ public abstract class Move {
     // sous classe de Move : mouvement non valide
     public static class NullMove extends Move {
         public NullMove() {
-            super(null, null, -1);
+            super(null, -1);
         }
         
         @Override
