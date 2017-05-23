@@ -7,6 +7,7 @@ import engine.board.Move;
 import engine.board.Move.*;
 import engine.board.Tile;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -27,24 +28,24 @@ public class Knight extends Piece {
        si le mouvement correspond à une de ces cases destinataires, on ne 
        peut pourra pas faire ce qu'il y a dans le if(BoardUtils...)
     */
-    private static boolean isFirstColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.firstFile[currentPosition] && (candidateOffset == -17 ||
-                candidateOffset == -10 ||candidateOffset == 6 || candidateOffset == 15);
-    }
-    
-    private static boolean isSecondColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.secondFile[currentPosition] && (candidateOffset == -10 || 
-                candidateOffset == 6);
-    }
-    
-    private static boolean isSeventhColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.seventhFile[currentPosition] && (candidateOffset == -6 ||
-                candidateOffset == 10);
+    private static boolean isFirstColumnExclusion(int currentPosition, int candidateOffset) {
+        return BoardUtils.firstFile[currentPosition] && ((candidateOffset == -17) ||
+                (candidateOffset == -10) || (candidateOffset == 6) || (candidateOffset == 15));
     }
 
-    private static boolean isEighthColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.eighthFile[currentPosition] && (candidateOffset == -15 ||
-                candidateOffset == -6 || candidateOffset == 10 || candidateOffset == 17);
+    private static boolean isSecondColumnExclusion(int currentPosition, int candidateOffset) {
+        return BoardUtils.secondFile[currentPosition] && ((candidateOffset == -10) || 
+                (candidateOffset == 6));
+    }
+
+    private static boolean isSeventhColumnExclusion(int currentPosition, int candidateOffset) {
+        return BoardUtils.seventhFile[currentPosition] && ((candidateOffset == -6) || 
+                (candidateOffset == 10));
+    }
+
+    private static boolean isEighthColumnExclusion(int currentPosition, int candidateOffset) {
+        return BoardUtils.eighthFile[currentPosition] && ((candidateOffset == -15) || 
+                (candidateOffset == -6) || (candidateOffset == 10) || (candidateOffset == 17));
     }
     
     /* Pour chaque case destinataire possible, on calcule pour chaque mouvement possible. 
@@ -53,19 +54,16 @@ public class Knight extends Piece {
        si c'est une case occupée, on récupére juste la couleur de la pièce
     */
     @Override
-    public List<Move> calculateLegalMoves(Board board) {
+    public Collection<Move> calculateLegalMoves(Board board) {
         List<Move> legalMoves = new ArrayList<>();
-
-        for (final int currentCandidateOffset : CANDIDATE_MOVE_COORDINATES) {
-            int candidateDestinationCoordinate = this.piecePosition + currentCandidateOffset;
-            /* si c'est une tileCoordinate valide sur le plateau et que ce n'est 
-               pas une exclusion, on continue */
-            if (isFirstColumnExlusion(this.piecePosition, currentCandidateOffset) ||
-                    isSecondColumnExlusion(this.piecePosition, currentCandidateOffset) ||
-                    isSeventhColumnExlusion(this.piecePosition, currentCandidateOffset) ||
-                    isEighthColumnExlusion(this.piecePosition, currentCandidateOffset)) {
+        for (int currentCandidateOffset : CANDIDATE_MOVE_COORDINATES) {
+            if(isFirstColumnExclusion(this.piecePosition, currentCandidateOffset) ||
+               isSecondColumnExclusion(this.piecePosition, currentCandidateOffset) ||
+               isSeventhColumnExclusion(this.piecePosition, currentCandidateOffset) ||
+               isEighthColumnExclusion(this.piecePosition, currentCandidateOffset)) {
                 continue;
             }
+            int candidateDestinationCoordinate = this.piecePosition + currentCandidateOffset;
             if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
                 Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                 if (!candidateDestinationTile.isTileOccupied())
@@ -74,9 +72,10 @@ public class Knight extends Piece {
                     Piece pieceAtDestination = candidateDestinationTile.getPiece();
                     Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
                     // si ce n'est pas une pièce de la même alliance/couleur alors c'est une pièce ennemie
-                    if (this.pieceAlliance != pieceAlliance)
-                        legalMoves.add(new AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
-                    break;
+                    if (this.pieceAlliance != pieceAlliance) {
+                        legalMoves.add(new MajorAttackMove(board, this, 
+                                candidateDestinationCoordinate, pieceAtDestination));
+                    }
                 }
             }
         }

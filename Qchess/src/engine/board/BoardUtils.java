@@ -35,19 +35,25 @@ public class BoardUtils {
     */
     private static boolean[] initColumn(int columnNumber) {
         boolean[] column = new boolean[numTiles];
+        for(int i = 0; i < column.length; i++) {
+            column[i] = false;
+        }
         do {
             column[columnNumber] = true;
             columnNumber += numTilesPerRow;
-        } while (columnNumber < numTiles);
+        } while(columnNumber < numTiles);
         return column;
     }
     
     public static boolean[] initRow(int rowNumber) {
         boolean[] row = new boolean[numTiles];
+        for(int i = 0; i < row.length; i++) {
+            row[i] = false;
+        }
         do {
             row[rowNumber] = true;
-            rowNumber ++;
-        } while (rowNumber % numTilesPerRow != 0);
+            rowNumber++;
+        } while(rowNumber % numTilesPerRow != 0);
         return row;
     }
     

@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 public class GameHistoryPanel extends JPanel {
     private DataModel model;
     private JScrollPane scrollPane;
-    private static final Dimension HISTORY_PANEL_DIMENSION = new Dimension(100, 400);
+    private static final Dimension HISTORY_PANEL_DIMENSION = new Dimension(150, 400);
 
     public GameHistoryPanel() {
         this.setLayout(new BorderLayout());

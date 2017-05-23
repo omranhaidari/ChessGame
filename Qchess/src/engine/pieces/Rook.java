@@ -23,12 +23,9 @@ public class Rook extends Piece {
     }
     
     // Si la pièce est au bord du board, il y a des déplacements que ne sont pas autorisés
-    private static boolean isFirstColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.firstFile[currentPosition] && (candidateOffset == -1);
-    }
-    
-    private static boolean isEighthColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.eighthFile[currentPosition] && (candidateOffset == 1);
+    private static boolean isColumnExclusion(int currentCandidate, int candidateDestinationCoordinate) {
+        return (BoardUtils.firstFile[candidateDestinationCoordinate] && (currentCandidate == -1)) ||
+               (BoardUtils.eighthFile[candidateDestinationCoordinate] && (currentCandidate == 1));
     }
     
     /* On regarde selon chaque vecteur de direction, on vérifie si c'est une 
@@ -40,15 +37,12 @@ public class Rook extends Piece {
     @Override
     public Collection<Move> calculateLegalMoves(Board board) {
         List<Move> legalMoves = new ArrayList<>();
-
-        for (final int candidateCoordinateOffset : CANDIDATE_MOVE_VECTOR_COORDINATES) {
+        for (int currentCandidateOffset : CANDIDATE_MOVE_VECTOR_COORDINATES) {
             int candidateDestinationCoordinate = this.piecePosition;
             while (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
-                if (isFirstColumnExlusion(candidateDestinationCoordinate, candidateCoordinateOffset) ||
-                        isEighthColumnExlusion(candidateDestinationCoordinate, candidateCoordinateOffset)) {
+                if (isColumnExclusion(currentCandidateOffset, candidateDestinationCoordinate))
                     break;
-                }
-                candidateDestinationCoordinate += candidateCoordinateOffset;
+                candidateDestinationCoordinate += currentCandidateOffset;
                 if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
                     Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
                     if (!candidateDestinationTile.isTileOccupied())
@@ -57,10 +51,12 @@ public class Rook extends Piece {
                         Piece pieceAtDestination = candidateDestinationTile.getPiece();
                         Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
                         // si ce n'est pas une pièce de la même alliance/couleur alors c'est une pièce ennemie
-                        if (this.pieceAlliance != pieceAlliance)
-                            legalMoves.add(new AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
+                        if (this.pieceAlliance != pieceAlliance) {
+                            legalMoves.add(new MajorAttackMove(board, this, 
+                                    candidateDestinationCoordinate, pieceAtDestination));
+                        }
                         // indique que ce n'est pas occupé et que l'on peut encore se déplacer, sinon on arrete la boucle si il y a déjà une pièce
-                        break; 
+                        break;
                     }
                 }
             }

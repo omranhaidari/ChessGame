@@ -1,5 +1,6 @@
 package engine;
 
+import engine.board.BoardUtils;
 import engine.player.BlackPlayer;
 import engine.player.Player;
 import engine.player.WhitePlayer;
@@ -12,6 +13,11 @@ public enum Alliance {
         }
 
         @Override
+        public int getOppositeDirection() {
+            return 1;
+        }
+        
+        @Override
         public boolean isWhite() {
             return true;
         }
@@ -21,6 +27,11 @@ public enum Alliance {
             return false;
         }
 
+        @Override
+        public boolean isPawnPromotionSquare(int position) {
+            return BoardUtils.eighthRank[position];
+        }
+        
         @Override
         public Player choosePlayer(WhitePlayer whitePlayer, BlackPlayer blackPlayer) {
             return whitePlayer;
@@ -34,6 +45,11 @@ public enum Alliance {
         }
 
         @Override
+        public int getOppositeDirection() {
+            return -1;
+        }
+        
+        @Override
         public boolean isWhite() {
             return false;
         }
@@ -44,13 +60,20 @@ public enum Alliance {
         }
 
         @Override
+        public boolean isPawnPromotionSquare(int position) {
+            return BoardUtils.firstRank[position];
+        }
+        
+        @Override
         public Player choosePlayer(WhitePlayer whitePlayer, BlackPlayer blackPlayer) {
             return blackPlayer;
         }
     };
     
     public abstract int getDirection();
+    public abstract int getOppositeDirection();
     public abstract boolean isWhite();
     public abstract boolean isBlack();
+    public abstract boolean isPawnPromotionSquare(int position);
     public abstract Player choosePlayer(WhitePlayer whitePlayer, BlackPlayer blackPlayer);
 }

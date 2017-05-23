@@ -50,8 +50,8 @@ public class Table {
     private BoardDirection boardDirection;
     private boolean highlightLegalMoves;
     
-    private Dimension outerFrameDimension = new Dimension(600, 600);
-    private Dimension boardPanelDimension = new Dimension(400, 350);
+    private Dimension outerFrameDimension = new Dimension(1000, 800);
+    private Dimension boardPanelDimension = new Dimension(500, 500);
     private Dimension tilePanelDimension = new Dimension(10, 10);
     private String defaultPieceImagesPath = "pieces/";
     private Color lightTileColor = Color.decode("#FFFACD");

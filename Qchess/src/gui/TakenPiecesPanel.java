@@ -9,6 +9,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +28,7 @@ public class TakenPiecesPanel extends JPanel{
     private JPanel northPanel;
     private JPanel southPanel;
     private static final Color PANEL_COLOR = Color.lightGray;
-    private static final Dimension TAKEN_PIECES_DIMENSION = new Dimension(40, 80);
+    private static final Dimension TAKEN_PIECES_DIMENSION = new Dimension(50, 80);
     private static final EtchedBorder PANEL_BORDER = new EtchedBorder(EtchedBorder.RAISED);
 
     
@@ -52,7 +53,7 @@ public class TakenPiecesPanel extends JPanel{
         List<Piece> blackTakenPieces = new ArrayList<>();
         for (Move move : moveLog.getMoves()) {
             if (move.isAttack()) {
-                Piece takenPiece = move.getAttackedPiece();
+                final Piece takenPiece = move.getAttackedPiece();
                 if (takenPiece.getPieceAlliance().isWhite())
                     whiteTakenPieces.add(takenPiece);
                 else if (takenPiece.getPieceAlliance().isBlack())
@@ -79,9 +80,10 @@ public class TakenPiecesPanel extends JPanel{
             try {
                 BufferedImage image = ImageIO.read(new File("pieces/" + 
                         takenPiece.getPieceAlliance().toString().substring(0, 1) +
-                        "" + takenPiece.toString()));
-                ImageIcon icon = new ImageIcon(image);
-                JLabel imageLabel = new JLabel();
+                        "" + takenPiece.toString() + ".gif"));
+                ImageIcon ic = new ImageIcon(image);
+                JLabel imageLabel = new JLabel(new ImageIcon(ic.getImage().getScaledInstance(
+                        ic.getIconWidth() - 15, ic.getIconWidth() - 15, Image.SCALE_SMOOTH)));
                 this.southPanel.add(imageLabel);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -92,10 +94,11 @@ public class TakenPiecesPanel extends JPanel{
             try {
                 BufferedImage image = ImageIO.read(new File("pieces/" + 
                         takenPiece.getPieceAlliance().toString().substring(0, 1) +
-                        "" + takenPiece.toString()));
-                ImageIcon icon = new ImageIcon(image);
-                JLabel imageLabel = new JLabel();
-                this.southPanel.add(imageLabel);
+                        "" + takenPiece.toString() + ".gif"));
+                final ImageIcon ic = new ImageIcon(image);
+                final JLabel imageLabel = new JLabel(new ImageIcon(ic.getImage().getScaledInstance(
+                        ic.getIconWidth() - 15, ic.getIconWidth() - 15, Image.SCALE_SMOOTH)));
+                this.northPanel.add(imageLabel);
             } catch (IOException e) {
                 e.printStackTrace();
             }

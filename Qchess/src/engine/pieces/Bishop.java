@@ -23,14 +23,14 @@ public class Bishop extends Piece {
     }
     
     // Si la pièce est au bord du board, il y a des déplacements que ne sont pas autorisés
-    private static boolean isFirstColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.firstFile[currentPosition] && candidateOffset == -9 ||
-                candidateOffset == 7;
+    private static boolean isFirstColumnExclusion(int currentCandidate, int candidateDestinationCoordinate) {
+        return (BoardUtils.firstFile[candidateDestinationCoordinate] &&
+                ((currentCandidate == -9) || (currentCandidate == 7)));
     }
-    
-    private static boolean isEighthColumnExlusion(int currentPosition, int candidateOffset) {
-        return BoardUtils.eighthFile[currentPosition] && (candidateOffset == -7 ||
-                candidateOffset == 9);
+
+    private static boolean isEighthColumnExclusion(int currentCandidate, int candidateDestinationCoordinate) {
+        return BoardUtils.eighthFile[candidateDestinationCoordinate] && 
+                ((currentCandidate == -7) || (currentCandidate == 9));
     }
     
     /* On regarde selon chaque vecteur de direction, on vérifie si c'est une 
@@ -42,27 +42,27 @@ public class Bishop extends Piece {
     @Override
     public Collection<Move> calculateLegalMoves(Board board) {
         List<Move> legalMoves = new ArrayList<>();
-
-        for (final int candidateCoordinateOffset : CANDIDATE_MOVE_VECTOR_COORDINATES) {
+        for (int currentCandidateOffset : CANDIDATE_MOVE_VECTOR_COORDINATES) {
             int candidateDestinationCoordinate = this.piecePosition;
             while (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
-                if (isFirstColumnExlusion(candidateDestinationCoordinate, candidateCoordinateOffset) ||
-                        isEighthColumnExlusion(candidateDestinationCoordinate, candidateCoordinateOffset)) {
+                if (isFirstColumnExclusion(currentCandidateOffset, candidateDestinationCoordinate) ||
+                    isEighthColumnExclusion(currentCandidateOffset, candidateDestinationCoordinate)) {
                     break;
                 }
-                candidateDestinationCoordinate += candidateCoordinateOffset;
+                candidateDestinationCoordinate += currentCandidateOffset;
                 if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
                     Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
-                    if (!candidateDestinationTile.isTileOccupied())
+                    if (!candidateDestinationTile.isTileOccupied()) 
                         legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
                     else {
                         Piece pieceAtDestination = candidateDestinationTile.getPiece();
                         Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
                         // si ce n'est pas une pièce de la même alliance/couleur alors c'est une pièce ennemie
-                        if (this.pieceAlliance != pieceAlliance)
-                            legalMoves.add(new AttackMove(board, this, candidateDestinationCoordinate, pieceAtDestination));
-                        // indique que ce n'est pas occupé et que l'on peut encore se déplacer, sinon on arrete la boucle si il y a déjà une pièce
-                        break; 
+                        if (this.pieceAlliance != pieceAlliance) {
+                            legalMoves.add(new MajorAttackMove(board, this, 
+                                    candidateDestinationCoordinate, pieceAtDestination));
+                        }
+                        break;
                     }
                 }
             }
