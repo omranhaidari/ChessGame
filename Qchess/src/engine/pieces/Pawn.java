@@ -99,7 +99,7 @@ public class Pawn extends Piece {
     
     @Override
     public Pawn movePiece(Move move) {
-        return new Pawn(move.getMovedPiece().getPieceAlliance(), move.getDestinationCoordinate());
+        return PieceUtils.INSTANCE.getMovedPawn(move);
     }
     
     @Override

@@ -4,11 +4,13 @@ import engine.board.Board;
 import engine.board.Move;
 import engine.player.MoveTransition;
 
-public class MiniMax implements MoveStrategy{
+public class MiniMax implements MoveStrategy {
     private BoardEvaluator boardEvaluator;
+    private int searchDepth;
 
-    public MiniMax() {
-        this.boardEvaluator = null;
+    public MiniMax(int searchDepth) {
+        this.boardEvaluator = new StandardBoardEvaluator();
+        this.searchDepth = searchDepth;
     }
     
     @Override
@@ -19,30 +21,22 @@ public class MiniMax implements MoveStrategy{
     // retourne le meilleur mouvement grâce au score en allant visiter tous les 
     // mouvements possibles après depth étapes
     @Override
-    public Move execute(Board board, int depth) {
+    public Move execute(Board board) {
         long startTime = System.currentTimeMillis(); // pour connâitre la durée d'éxecution
         Move bestMove = null;
         int highestSeenValue = Integer.MIN_VALUE;
         int lowestSeenValue = Integer.MAX_VALUE;
         int currentValue;
-        System.out.println(board.currentPlayer() + " THINKING with depth = " + depth);
-//        this.freqTable = new FreqTableRow[board.currentPlayer().getLegalMoves().size()];
-//        this.freqTableIndex = 0;
-        int moveCounter = 1;
+        System.out.println(board.currentPlayer().getAlliance() + " THINKING with depth = " + this.searchDepth);
         int numMoves = board.currentPlayer().getLegalMoves().size();
         for (Move move : board.currentPlayer().getLegalMoves()) {
             MoveTransition moveTransition = board.currentPlayer().makeMove(move);
             if (moveTransition.getMoveStatus().isDone()) {
-//                final FreqTableRow row = new FreqTableRow(move);
-//                this.freqTable[this.freqTableIndex] = row;
                 // moveTransition.getTransitionBoard() car calcule les mouvements 
                 // de transition avec comme point de départ : le tableau de transition
                 currentValue = board.currentPlayer().getAlliance().isWhite() ?
-                                min(moveTransition.getTransitionBoard(), depth - 1) :
-                                max(moveTransition.getTransitionBoard(), depth - 1);
-//                System.out.println("\t" + toString() + " analyzing move (" +moveCounter + "/" +numMoves+ ") " + move +
-//                                   " scores " + currentValue + " " +this.freqTable[this.freqTableIndex]);
-//                this.freqTableIndex++;
+                                min(moveTransition.getTransitionBoard(), this.searchDepth - 1) :
+                                max(moveTransition.getTransitionBoard(), this.searchDepth - 1);
                 if (board.currentPlayer().getAlliance().isWhite() && 
                         currentValue >= highestSeenValue) {
                     highestSeenValue = currentValue;
@@ -53,24 +47,15 @@ public class MiniMax implements MoveStrategy{
                     lowestSeenValue = currentValue;
                     bestMove = move;
                 }
-            } 
-//            else
-//                System.out.println("\t" + toString() + " can't execute move (" +moveCounter+ "/" +numMoves+ ") " + move);
-//            moveCounter++;
+            }
         }
         long executionTime = System.currentTimeMillis() - startTime;
-//        System.out.printf("%s SELECTS %s [#boards = %d time taken = %d ms, rate = %.1f\n", board.currentPlayer(),
-//                bestMove, this.boardsEvaluated, this.executionTime, (1000 * ((double)this.boardsEvaluated/this.executionTime)));
-//        long total = 0;
-//        for (final FreqTableRow row : this.freqTable) {
-//            if(row != null) {
-//                total += row.getCount();
-//            }
-//        }
-//        if(this.boardsEvaluated != total) {
-//            System.out.println("somethings wrong with the # of boards evaluated!");
-//        }
         return bestMove;
+    }
+    
+    private static boolean isEndGameScenario(Board board) {
+        return board.currentPlayer().isInCheckMate() || 
+                board.currentPlayer().isInStaleMate();
     }
     
     /* Minimisation : regarde tous les mouvements possibles du joueurs à la même 
@@ -78,7 +63,7 @@ public class MiniMax implements MoveStrategy{
        trouve la valeur minimale en les comparant tous.
     */
     public int min(Board board, int depth) {
-        if(depth == 0) { // ou game over
+        if(depth == 0  || isEndGameScenario(board)) {
             return this.boardEvaluator.evaluate(board, depth);
         }
         int lowestSeenValue = Integer.MAX_VALUE;
@@ -95,7 +80,7 @@ public class MiniMax implements MoveStrategy{
     
     // même principe mais recherche la valeur maximale
     public int max(Board board, int depth) {
-        if(depth == 0) {
+        if(depth == 0 || isEndGameScenario(board)) {
             return this.boardEvaluator.evaluate(board, depth);
         }
         int highestSeenValue = Integer.MIN_VALUE;

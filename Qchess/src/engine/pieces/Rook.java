@@ -12,22 +12,22 @@ import java.util.Collections;
 import java.util.List;
 
 public class Rook extends Piece {
-    private final static int[] CANDIDATE_MOVE_VECTOR_COORDINATES = {-8, 1, 1, 8};
 
-    public Rook(Alliance pieceAlliance, int piecePosition) {
-        super(PieceType.ROOK, pieceAlliance, piecePosition, true);
+    private final static int[] CANDIDATE_MOVE_COORDINATES = { -8, -1, 1, 8 };
+
+    public Rook(Alliance alliance, int piecePosition) {
+        super(PieceType.ROOK, alliance, piecePosition, true);
+    }
+
+    public Rook(Alliance alliance, int piecePosition, boolean isFirstMove) {
+        super(PieceType.ROOK, alliance, piecePosition, isFirstMove);
     }
     
-    public Rook(Alliance pieceAlliance, int piecePosition, boolean isFirstMove) {
-        super(PieceType.ROOK, pieceAlliance, piecePosition, isFirstMove);
-    }
-    
-    // Si la pièce est au bord du board, il y a des déplacements que ne sont pas autorisés
     private static boolean isColumnExclusion(int currentCandidate, int candidateDestinationCoordinate) {
         return (BoardUtils.firstFile[candidateDestinationCoordinate] && (currentCandidate == -1)) ||
                (BoardUtils.eighthFile[candidateDestinationCoordinate] && (currentCandidate == 1));
     }
-    
+
     /* On regarde selon chaque vecteur de direction, on vérifie si c'est une 
        tile valide sur le board pour le déplacement. Si c'est le cas, on vérifie
        si la tile est occupée : c'est une MajorMove. Si elle est occupée par un
@@ -37,11 +37,12 @@ public class Rook extends Piece {
     @Override
     public Collection<Move> calculateLegalMoves(Board board) {
         List<Move> legalMoves = new ArrayList<>();
-        for (int currentCandidateOffset : CANDIDATE_MOVE_VECTOR_COORDINATES) {
+        for (int currentCandidateOffset : CANDIDATE_MOVE_COORDINATES) {
             int candidateDestinationCoordinate = this.piecePosition;
             while (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
-                if (isColumnExclusion(currentCandidateOffset, candidateDestinationCoordinate))
+                if (isColumnExclusion(currentCandidateOffset, candidateDestinationCoordinate)) {
                     break;
+                }
                 candidateDestinationCoordinate += currentCandidateOffset;
                 if (BoardUtils.isValidTileCoordinate(candidateDestinationCoordinate)) {
                     Tile candidateDestinationTile = board.getTile(candidateDestinationCoordinate);
@@ -49,13 +50,12 @@ public class Rook extends Piece {
                         legalMoves.add(new MajorMove(board, this, candidateDestinationCoordinate));
                     else {
                         Piece pieceAtDestination = candidateDestinationTile.getPiece();
-                        Alliance pieceAlliance = pieceAtDestination.getPieceAlliance();
+                        Alliance pieceAtDestinationAlliance = pieceAtDestination.getPieceAlliance();
                         // si ce n'est pas une pièce de la même alliance/couleur alors c'est une pièce ennemie
-                        if (this.pieceAlliance != pieceAlliance) {
-                            legalMoves.add(new MajorAttackMove(board, this, 
-                                    candidateDestinationCoordinate, pieceAtDestination));
+                        if (this.pieceAlliance != pieceAtDestinationAlliance) {
+                            legalMoves.add(new MajorAttackMove(board, this, candidateDestinationCoordinate,
+                                    pieceAtDestination));
                         }
-                        // indique que ce n'est pas occupé et que l'on peut encore se déplacer, sinon on arrete la boucle si il y a déjà une pièce
                         break;
                     }
                 }
@@ -63,14 +63,14 @@ public class Rook extends Piece {
         }
         return Collections.unmodifiableList(legalMoves);
     }
-    
+
     @Override
     public Rook movePiece(Move move) {
-        return new Rook(move.getMovedPiece().getPieceAlliance(), move.getDestinationCoordinate());
+        return PieceUtils.INSTANCE.getMovedRook(move);
     }
-    
+
     @Override
     public String toString() {
-        return PieceType.ROOK.toString();
+        return this.pieceType.toString();
     }
 }

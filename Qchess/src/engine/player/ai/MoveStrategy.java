@@ -5,5 +5,5 @@ import engine.board.Move;
 
 public interface MoveStrategy {
 
-    Move execute(Board board, int depth); // depth : le nombre d'étapes limite
+    Move execute(Board board); // depth : le nombre d'étapes limite
 }
