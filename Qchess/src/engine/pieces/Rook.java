@@ -22,7 +22,8 @@ public class Rook extends Piece {
     public Rook(Alliance alliance, int piecePosition, boolean isFirstMove) {
         super(PieceType.ROOK, alliance, piecePosition, isFirstMove);
     }
-    
+
+    // si la pièce est au bord du board, il y a des déplacements qui ne sont pas autorisés
     private static boolean isColumnExclusion(int currentCandidate, int candidateDestinationCoordinate) {
         return (BoardUtils.firstFile[candidateDestinationCoordinate] && (currentCandidate == -1)) ||
                (BoardUtils.eighthFile[candidateDestinationCoordinate] && (currentCandidate == 1));

@@ -13,22 +13,15 @@ public class MiniMax implements MoveStrategy {
         this.searchDepth = searchDepth;
     }
     
-    @Override
-    public String toString() {
-        return "MiniMax";
-    }
-    
     // retourne le meilleur mouvement grâce au score en allant visiter tous les 
     // mouvements possibles après depth étapes
     @Override
     public Move execute(Board board) {
-        long startTime = System.currentTimeMillis(); // pour connâitre la durée d'éxecution
         Move bestMove = null;
         int highestSeenValue = Integer.MIN_VALUE;
         int lowestSeenValue = Integer.MAX_VALUE;
         int currentValue;
-        System.out.println(board.currentPlayer().getAlliance() + " THINKING with depth = " + this.searchDepth);
-        int numMoves = board.currentPlayer().getLegalMoves().size();
+        System.out.println(board.currentPlayer().getAlliance() + " is thinking with a depth = " + this.searchDepth);
         for (Move move : board.currentPlayer().getLegalMoves()) {
             MoveTransition moveTransition = board.currentPlayer().makeMove(move);
             if (moveTransition.getMoveStatus().isDone()) {
@@ -49,7 +42,6 @@ public class MiniMax implements MoveStrategy {
                 }
             }
         }
-        long executionTime = System.currentTimeMillis() - startTime;
         return bestMove;
     }
     

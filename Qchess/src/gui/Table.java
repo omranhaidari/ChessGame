@@ -27,8 +27,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
@@ -106,7 +104,7 @@ public class Table extends Observable {
     
     // signale que c'est à l'ordinateur de jouer : corespond à notifyObserver
     private void setupUpdate(GameSetup gameSetup) {
-        setChanged(); // quelque chose a ete modifié sur le jeu
+        setChanged(); // quelque chose a été modifié sur le jeu
         notifyObservers(gameSetup); // notifie tous les observers de Table, tels que l'IA
     }
     
@@ -154,15 +152,6 @@ public class Table extends Observable {
     
     private JMenu createFileMenu() {
         JMenu fileMenu = new JMenu("File");
-//        JMenuItem openFile = new JMenuItem("New File");
-//        openFile.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                System.out.println("Open up a new file!");
-//            }
-//        });
-//        fileMenu.add(openFile);
-        
         JMenuItem exitMenuItem = new JMenuItem("Exit");
         exitMenuItem.addActionListener(new ActionListener() {
             @Override
@@ -224,9 +213,10 @@ public class Table extends Observable {
                 thinkTank.execute();
             }
             if (Table.get().getGameBoard().currentPlayer().isInCheckMate())
-                System.out.println("Game Over! " + Table.get().getGameBoard().currentPlayer().getAlliance() + " is in checkmate!");
+                System.out.println("Game Over! " + Table.get().getGameBoard().currentPlayer().getAlliance() +
+                        " is in checkmate! " + Table.get().getGameBoard().currentPlayer().getOpponent().getAlliance() + " has won!");
             if (Table.get().getGameBoard().currentPlayer().isInStaleMate())
-                System.out.println("Game Over! " + Table.get().getGameBoard().currentPlayer().getAlliance() + " is in stalemate!");
+                System.out.println("Game Over! " + Table.get().getGameBoard().currentPlayer().getAlliance() + " is in stalemate! It is a draw!");
         }
     }
     
@@ -243,11 +233,11 @@ public class Table extends Observable {
             return bestMove;
         }
 
-        // quand SwingWorker a fini, l'ordinateur peut faire ce qu'il veut dans cette méthode
+        // quand SwingWorker a fini
         @Override
         public void done() {
             try {
-                Move bestMove = get(); // get les bestMove de doInBackground()
+                Move bestMove = get(); // get() les bestMove de doInBackground()
                 Table.get().updateComputerMove(bestMove);
                 // mise à jour du Board après que l'ordinateur joue
                 Table.get().updateGameBoard(Table.get().getGameBoard().currentPlayer().makeMove(bestMove).getTransitionBoard());
@@ -335,13 +325,7 @@ public class Table extends Observable {
         }
         
         public void addMove(Move move) {
-            Move last = null;
-            if (!moves.isEmpty()) {
-            last = moves.get(moves.size() - 1);
-            }
-            if (move != last){
-                this.moves.add(move);
-            }
+            this.moves.add(move);
         }
         
         // retourne le nombre d'éléments dans MoveLog

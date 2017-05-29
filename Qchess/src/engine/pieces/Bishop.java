@@ -22,7 +22,7 @@ public class Bishop extends Piece {
         super(PieceType.BISHOP, pieceAlliance, piecePosition, isFirstMove);
     }
     
-    // Si la pièce est au bord du board, il y a des déplacements que ne sont pas autorisés
+    // si la pièce est au bord du board, il y a des déplacements qui ne sont pas autorisés
     private static boolean isFirstColumnExclusion(int currentCandidate, int candidateDestinationCoordinate) {
         return (BoardUtils.firstFile[candidateDestinationCoordinate] &&
                 ((currentCandidate == -9) || (currentCandidate == 7)));

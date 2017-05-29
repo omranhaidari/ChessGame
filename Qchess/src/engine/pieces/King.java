@@ -22,7 +22,7 @@ public class King extends Piece {
         super(PieceType.KING, pieceAlliance, piecePosition, isFirstMove);
     }
     
-    // Si la pièce est au bord du board, il y a des déplacements que ne sont pas autorisés
+    // si la pièce est au bord du board, il y a des déplacements qui ne sont pas autorisés
     private static boolean isFirstColumnExclusion(int currentCandidate, int candidateDestinationCoordinate) {
         return BoardUtils.firstFile[currentCandidate] &&  ((candidateDestinationCoordinate == -9) || 
                 (candidateDestinationCoordinate == -1) || (candidateDestinationCoordinate == 7));
@@ -33,6 +33,12 @@ public class King extends Piece {
                 (candidateDestinationCoordinate == 1) || (candidateDestinationCoordinate == 9));
     }
     
+    /* On regarde selon chaque vecteur de direction, on vérifie si c'est une 
+       tile valide sur le board pour le déplacement. Si c'est le cas, on vérifie
+       si la tile est occupée : c'est une MajorMove. Si elle est occupée par un
+       ennemie, c'est une AttackMove. On continue jusqu'à qu'il n'y ait plus de
+       tile valide dans la direction. Cela permet de trouver les différentes positions possibles.
+    */
     @Override
     public Collection<Move> calculateLegalMoves(Board board) {
         List<Move> legalMoves = new ArrayList<>();

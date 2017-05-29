@@ -17,8 +17,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -75,7 +73,7 @@ public class TakenPiecesPanel extends JPanel{
                 return Ints.compare(o1.getPieceValue(), o2.getPieceValue());
             }
         });
-        // affiche les pièces mangées
+        // affiche les pièces capturées
         for (Piece takenPiece : whiteTakenPieces) {
             try {
                 BufferedImage image = ImageIO.read(new File("pieces/" + 

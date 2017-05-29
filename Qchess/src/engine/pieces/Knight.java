@@ -22,7 +22,8 @@ public class Knight extends Piece {
     public Knight(Alliance alliance, int piecePosition, boolean isFirstMove) {
         super(PieceType.KNIGHT, alliance, piecePosition, isFirstMove);
     }
-    
+
+    // si la pièce est au bord du board, il y a des déplacements qui ne sont pas autorisés
     private static boolean isFirstColumnExclusion(int currentPosition, int candidateOffset) {
         return BoardUtils.firstFile[currentPosition] && ((candidateOffset == -17) ||
                 (candidateOffset == -10) || (candidateOffset == 6) || (candidateOffset == 15));

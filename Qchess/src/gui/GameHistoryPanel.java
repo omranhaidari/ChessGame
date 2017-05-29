@@ -137,7 +137,6 @@ public class GameHistoryPanel extends JPanel {
         private String blackMove;
 
         public Row() {
-            
         }
         
         public String getWhiteMove() {

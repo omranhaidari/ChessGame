@@ -4,7 +4,6 @@ import engine.board.Board.Builder;
 import engine.pieces.Pawn;
 import engine.pieces.Piece;
 import engine.pieces.Rook;
-import java.util.Objects;
 
 public abstract class Move {
     protected Board board;
@@ -12,7 +11,6 @@ public abstract class Move {
     protected int destinationCoordinate;
     protected boolean isFirstMove;
     public static final Move NULL_MOVE = new NullMove();
-    
 
     private  Move(Board board, Piece movedPiece, int destinationCoordinate) {
         this.board = board;
@@ -28,7 +26,7 @@ public abstract class Move {
         this.isFirstMove = false;
     }
     
-    // crée un nouveau plateau de jeu avec le déplacement de la pièce en sélectionnée
+    // crée un nouveau plateau de jeu avec le déplacement de la pièce en la sélectionnée
     public Board execute() {
         Builder builder = new Builder();
         for (Piece piece : this.board.currentPlayer().getActivePieces()) {
@@ -321,8 +319,6 @@ public abstract class Move {
             }
             // déplacement de la tour vers la bonne case
             builder.setPiece(this.movedPiece.movePiece(this));
-            // déplacement de la tour vers la bonne case
-            ///
             builder.setPiece(new Rook(this.castleRook.getPieceAlliance(), this.castleRookDestination));
             // à l'adversaire de jouer ensuite
             builder.setMoveMaker(this.board.currentPlayer().getOpponent().getAlliance());
@@ -363,7 +359,7 @@ public abstract class Move {
         
         @Override
         public String toString() {
-            return "0-0"; // norme du format PNG du petit rock
+            return "0-0"; // norme du format PNG du petit roque
         }
     }
     
@@ -381,7 +377,7 @@ public abstract class Move {
         
         @Override
         public String toString() {
-            return "0-0-0"; // norme du format PNG du grand rock
+            return "0-0-0"; // norme du format PNG du grand roque
         }
     }
     

@@ -5,11 +5,11 @@ import engine.board.Board;
 import engine.board.BoardUtils;
 import engine.board.Move;
 import engine.board.Move.*;
-import engine.board.Tile;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 public class Pawn extends Piece {
     private final static int[] CANDIDATE_MOVE_COORDINATES = {7, 8, 9, 16}; 
@@ -107,8 +107,28 @@ public class Pawn extends Piece {
         return PieceType.PAWN.toString();
     }
     
-    // c'est plus souvent le cas
     public Piece getPromotionPiece() {
-        return new Rook(this.pieceAlliance, this.piecePosition, false);
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Choose the piece for the pawn promotion! 0 for Bishop, 1 for Knight, 2 for Rook : ");
+        int number = sc.nextInt();
+        Piece str = null;
+        switch (number) { 
+            case 0:
+                str = new Bishop(this.pieceAlliance, this.piecePosition, false);
+                System.out.println("The pawn is promoted to a Bishop");
+                break; 
+            case 1:
+                str = new Knight(this.pieceAlliance, this.piecePosition, false);
+                System.out.println("The pawn is promoted to a Knight");
+                break; 
+            case 2:
+                str = new Rook(this.pieceAlliance, this.piecePosition, false);
+                System.out.println("The pawn is promoted to a Rook");
+                break;
+            default:
+                System.out.println("Not a valid integer!");
+                break;
+        }
+        return str;
     }
 }
