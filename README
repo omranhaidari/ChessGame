@@ -1,0 +1,14 @@
+Avant de lancer l'application :
+Il faut avoir guava 21 en librairie pour faire tourner le jeu.
+L'executable que nous créons ne permet pas de faire tourner le jeu car celui-ci contient des images, et elles ne sont pas récupérées.
+Il faudrait donc l'ouvrir dans une IDE pour le lancer.
+
+
+Pour jouer contre l'automatique, commencez par ajouter un joueur "computer", car le jeu est initialisé avec deux joueurs humains.
+La profondeur (depth) correspond à la "difficulté" mais rallonge aussi le temps de calcul des déplacements. Elle est par défaut règlée
+sur 4.
+
+Pour déplacer une pièce, cliquez sur celle-ci. Les déplacements possibles apparaissent alors sous forme de carré vert au milieu
+des cases. Cliquez sur la cases où vous voulez déplacer votre pièce.
+
+Bon jeu :)
