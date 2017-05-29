@@ -335,7 +335,13 @@ public class Table extends Observable {
         }
         
         public void addMove(Move move) {
-            this.moves.add(move);
+            Move last = null;
+            if (!moves.isEmpty()) {
+            last = moves.get(moves.size() - 1);
+            }
+            if (move != last){
+                this.moves.add(move);
+            }
         }
         
         // retourne le nombre d'éléments dans MoveLog
