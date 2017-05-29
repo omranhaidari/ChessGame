@@ -1,5 +1,5 @@
 Avant de lancer l'application :
-Il faut avoir guava 21 en librairie pour faire tourner le jeu.
+Il faut avoir guava 21 en librairie pour faire tourner le jeu (disponible dans dist/lib)
 L'executable que nous créons ne permet pas de faire tourner le jeu car celui-ci contient des images, et elles ne sont pas récupérées.
 Il faudrait donc l'ouvrir dans une IDE pour le lancer.
 
