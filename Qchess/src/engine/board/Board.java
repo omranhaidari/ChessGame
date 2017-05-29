@@ -134,11 +134,6 @@ public class Board {
         return this.whitePieces;
     }
      
-//    // print les pièces noires et les pièces blanches différemment
-//    private static String prettyPrint(Tile tile) {
-//        return tile.toString();
-//    }
-     
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
