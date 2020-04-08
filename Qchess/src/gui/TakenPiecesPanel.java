@@ -76,7 +76,7 @@ public class TakenPiecesPanel extends JPanel{
         // affiche les pièces capturées
         for (Piece takenPiece : whiteTakenPieces) {
             try {
-                BufferedImage image = ImageIO.read(new File("pieces/" + 
+                BufferedImage image = ImageIO.read(new File("QChess/pieces/" +
                         takenPiece.getPieceAlliance().toString().substring(0, 1) +
                         "" + takenPiece.toString() + ".gif"));
                 ImageIcon ic = new ImageIcon(image);
@@ -90,7 +90,7 @@ public class TakenPiecesPanel extends JPanel{
         
         for (Piece takenPiece : blackTakenPieces) {
             try {
-                BufferedImage image = ImageIO.read(new File("pieces/" + 
+                BufferedImage image = ImageIO.read(new File("QChess/pieces/" +
                         takenPiece.getPieceAlliance().toString().substring(0, 1) +
                         "" + takenPiece.toString() + ".gif"));
                 final ImageIcon ic = new ImageIcon(image);

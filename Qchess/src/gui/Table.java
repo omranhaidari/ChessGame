@@ -59,7 +59,7 @@ public class Table extends Observable {
     private Dimension outerFrameDimension = new Dimension(1000, 800);
     private Dimension boardPanelDimension = new Dimension(500, 500);
     private Dimension tilePanelDimension = new Dimension(10, 10);
-    private String defaultPieceImagesPath = "pieces/";
+    private String defaultPieceImagesPath = "QChess/pieces/";
     private Color lightTileColor = Color.decode("#FFFACD");
     private Color darkTileColor = Color.decode("#593E1A");
     
@@ -469,7 +469,7 @@ public class Table extends Observable {
                 for (Move move : pieceLegalMoves(board)) {
                     if (move.getDestinationCoordinate() == this.tileId) {
                         try {
-                            add(new JLabel(new ImageIcon(ImageIO.read(new File("other/green_dot.png")))));
+                            add(new JLabel(new ImageIcon(ImageIO.read(new File("QChess/other/green_dot.png")))));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
